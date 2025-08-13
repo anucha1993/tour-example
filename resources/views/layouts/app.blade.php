@@ -7,6 +7,8 @@
     <meta name="description" content="@yield('meta_description','แพลตฟอร์มจองทัวร์คุณภาพ ครบ จบ โปร่งใส')" />
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
     <link rel="dns-prefetch" href="//images.unsplash.com" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <!-- Preload hero image for faster LCP -->
     <link rel="preload" as="image" fetchpriority="high" href="https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1400&q=60" imagesrcset="https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=800&q=60 800w, https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1400&q=60 1400w" imagesizes="100vw" />
     <!-- Removed external webfonts for performance: using system stack -->
