@@ -1,5 +1,5 @@
 <footer id="contact" class="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-    <div class="mx-auto max-w-7xl px-4 py-14 grid gap-10 md:grid-cols-4 text-sm">
+    {{-- <div class="mx-auto max-w-7xl px-4 py-14 grid gap-10 md:grid-cols-4 text-sm">
         <div class="space-y-4">
             <span class="inline-flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100"><span class="inline-block h-8 w-8 rounded-lg bg-orange-600 text-white grid place-content-center text-sm font-bold">TB</span>TourBooking</span>
             <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-xs max-w-xs">สร้างสรรค์ประสบการณ์การเดินทางที่มีคุณภาพ โปร่งใส และดูแลตั้งแต่ก่อนเดินทางจนจบทริป</p>
@@ -34,6 +34,6 @@
                 <li>Email support@example.com</li>
             </ul>
         </div>
-    </div>
-    <div class="text-center text-[11px] text-slate-400 dark:text-slate-500 py-5 border-t border-slate-100 dark:border-slate-800">© {{date('Y')}} TourBooking Co.,Ltd. All rights reserved.</div>
+    </div> --}}
+    <div class="text-center text-[11px] text-slate-400 dark:text-slate-500 py-5 border-t border-slate-100 dark:border-slate-800">Copyright © 2024 Next Trip Holiday, All Rights Reserved.</div>
 </footer>
