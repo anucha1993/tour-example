@@ -150,23 +150,147 @@
       </div>
     </div>
 
+    
+{{-- ========================= MAIN NAV (LIGHTWEIGHT) ========================= --}}
+@php
+
+ $landmass = \App\Models\Backend\LandmassModel::where('deleted_at',null)->orderBy('id','asc')->get(); 
+    $contact = \App\Models\Backend\ContactModel::find(1); 
+    $footer = \App\Models\Backend\FooterModel::find(1);
+
+
+  // เตรียมตัวแปรสำหรับส่วนที่ต้องใช้ซ้ำ
+  // $check_auth = App\Models\Backend\MemberModel::find(Auth::guard('Member')->id());
+
+  // สำหรับเมนู "ทัวร์ต่างประเทศ"
+  // $landmass พร้อมใช้งานจาก controller ของคุณ
+  // ดึงประเทศต่อทวีปในลูปด้านล่าง (ตามโค้ดเดิม)
+
+  // เมนู "ทัวร์ในประเทศ"
+  $province = \App\Models\Backend\ProvinceModel::where(['status'=>'on','deleted_at'=>null])
+              ->orderBy('id','asc')->get();
+
+  // เมนู "ทัวร์ตามเทศกาล"
+  $calendar = \App\Models\Backend\CalendarModel::where('start_date','>=',date('Y-m-d'))
+              ->where(['status'=>'on','deleted_at'=>null])->orderBy('start_date','asc')->get();
+
+  // เมนู "แพ็คเกจทัวร์" (รวมประเทศที่มีแพ็คเกจ)
+  $row = \App\Models\Backend\PackageModel::where('status','on')->get();
+  $arr = [];
+  foreach($row as $r){ $arr = array_merge($arr, json_decode($r->country_id,true) ?? []); }
+  $arr = array_unique($arr);
+  $count = \App\Models\Backend\CountryModel::whereIn('id',$arr)
+            ->whereNull('deleted_at')->where('status','on')->get();
+@endphp
+
     <!-- แถบเมนูล่าง (ของเดิมคุณ) -->
     <div class="w-full bg-[#f2f2fb]">
-      <div class="mx-auto max-w-7xl px-4 md:px-6">
-        <nav class="flex items-center justify-between">
+      <div class="mx-auto max-w-7xl px-4 md:px-6"><nav class="flex items-center justify-between">
           <ul class="flex items-center gap-6 text-[14px] text-slate-700">
             <li>
               <a href="#" class="inline-flex items-center gap-2 py-3 text-[#f0742f]">
                 <svg viewBox="0 0 24 24" class="h-5 w-5"><path d="M3 10.5L12 3l9 7.5v9a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 19.5v-9z" fill="currentColor"/></svg>
               </a>
             </li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">ทัวร์ต่างประเทศ</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">ทัวร์ในประเทศ</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">ทัวร์โปรโมชั่น</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">ทัวร์ตามเทศกาล</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">แพ็คเกจทัวร์</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">รับจัดกรุ๊ปทัวร์</a></li>
-            <li><a href="#" class="inline-block py-3 hover:text-[#214e9a]">รอบรู้เรื่องเที่ยว</a></li>
+            {{-- ทัวร์ต่างประเทศ (Megamenu เบา ๆ) --}}
+          <li class="relative group">
+            <a href="javascript:void(0)" class="inline-flex h-10 items-center hover:text-[#214e9a]">ทัวร์ต่างประเทศ</a>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                        absolute left-0 top-full z-40 mt-2 w-[min(100vw,940px)]">
+              <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-auto">
+                  @foreach($landmass as $land)
+                    @php
+                      $country = \App\Models\Backend\CountryModel::where([
+                                  'landmass_id'=>$land->id,'status'=>'on','deleted_at'=>null
+                                ])->orderBy('id','asc')->get();
+                    @endphp
+                    <div class="min-w-0">
+                      <h4 class="mb-2 font-semibold text-slate-800">{{ $land->landmass_name }}</h4>
+                      <ul class="space-y-1">
+                        @foreach($country as $co)
+                          <li>
+                            <a href="https://nexttripholiday.com/oversea/{{ $co->slug }}" class="flex items-center gap-2 py-1.5 hover:text-[#214e9a]">
+                              <img src="https://nexttripholiday.b-cdn.net/{{ $co->img_icon }}" class="h-[18px] w-[24px] object-contain rounded-sm" alt="">
+                              <span>ทัวร์{{ $co->country_name_th }}</span>
+                            </a>
+                          </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  @endforeach
+                </div>
+              </div>
+            </div>
+          </li>
+
+            
+           {{-- ทัวร์ในประเทศ --}}
+          <li class="relative group">
+            <a href="javascript:void(0)" class="inline-flex h-10 items-center hover:text-[#214e9a]">ทัวร์ในประเทศ</a>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                        absolute left-0 top-full z-40 mt-2 w-[min(100vw,720px)]">
+              <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
+                <ul class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-1 max-h-[60vh] overflow-auto">
+                  @foreach($province as $pro)
+                    <li>
+                      <a href="https://nexttripholiday.com/inthai/{{ $pro->slug }}" class="block py-1.5 hover:text-[#214e9a]">
+                        ทัวร์{{ $pro->name_th }}
+                      </a>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+          </li>
+
+            
+            <li><a href="https://nexttripholiday.com/promotiontour/0/0" class="inline-flex h-10 items-center hover:text-[#214e9a]">ทัวร์โปรโมชั่น</a></li>
+
+           
+            {{-- ทัวร์ตามเทศกาล --}}
+          <li class="relative group">
+            <a href="{{ url('weekend') }}" class="inline-flex h-10 items-center hover:text-[#214e9a]">ทัวร์ตามเทศกาล</a>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                        absolute left-0 top-full z-40 mt-2 w-[min(100vw,520px)]">
+              <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
+                <h4 class="mb-2 font-semibold text-slate-800">ทัวร์ตามเทศกาล</h4>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 max-h-[50vh] overflow-auto">
+                  @foreach($calendar as $ca)
+                    <li>
+                      <a href="https://nexttripholiday.com/weekend-landing/{{ $ca->id }}" class="block py-1.5 hover:text-[#214e9a]">
+                        ทัวร์{{ $ca->holiday }}
+                      </a>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+          </li>
+
+            {{-- แพ็คเกจทัวร์ --}}
+          <li class="relative group">
+            <a href="{{ url('package/0') }}" class="inline-flex h-10 items-center hover:text-[#214e9a]">แพ็คเกจทัวร์</a>
+            <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition
+                        absolute left-0 top-full z-40 mt-2 w-[min(100vw,520px)]">
+              <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
+                <h4 class="mb-2 font-semibold text-slate-800">เที่ยวด้วยตัวเอง</h4>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 max-h-[50vh] overflow-auto">
+                  @foreach($count as $co)
+                    <li>
+                      <a href="https://nexttripholiday.com/package/{{ $co->id }}" class="block py-1.5 hover:text-[#214e9a]">
+                        แพ็คเกจ{{ $co->country_name_th }}
+                      </a>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
+          </li>
+
+           <li><a href="https://nexttripholiday.com/package/organizetour" class="inline-flex h-10 items-center hover:text-[#214e9a]">รับจัดกรุ๊ปทัวร์</a></li>
+          <li><a href="https://nexttripholiday.com/aroundworld/0/0/0" class="inline-flex h-10 items-center hover:text-[#214e9a]">รอบรู้เรื่องเที่ยว</a></li>
+
           </ul>
 
           <div class="flex items-center gap-4">
@@ -190,6 +314,7 @@
             </a>
           </div>
         </nav>
+        
       </div>
     </div>
   </div>

@@ -45,54 +45,88 @@
 
 
 
-    <!-- แพ็คเกจทัวร์แนะนำในต่างแดน -->
-    <section class="bg-gradient-to-br py-10">
-        <div class="mx-auto max-w-7xl px-4">
-            <!-- หัวข้อ -->
-            <div class="mb-6 flex items-center gap-3">
-                <span
-                    class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white shadow ring-1 ring-black/5">
-                    <!-- icon pin -->
-                    <svg viewBox="0 0 24 24" class="h-4 w-4 text-[#f0742f]">
-                        <path fill="currentColor"
-                            d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z" />
-                    </svg>
+    <!-- แพ็คเกจทัวร์แนะนำในต่างแดน (เด่นขึ้น) -->
+<section class="relative py-12">
+  <!-- พื้นหลังไล่สี + แสงเบลอ -->
+  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-orange-50 via-white to-sky-50"></div>
+  <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(240,116,47,0.12),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(56,189,248,0.12),transparent_60%)]"></div>
+
+  <div class="mx-auto max-w-7xl px-4">
+    <!-- หัวข้อ -->
+    <div class="mb-6 flex items-center gap-3">
+      <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow ring-1 ring-black/5">
+        <!-- icon pin -->
+        <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]">
+          <path fill="currentColor" d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/>
+        </svg>
+      </span>
+      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+        ประเทศยอดนิยม
+      </h2>
+    </div>
+
+    <!-- กริดการ์ด -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @foreach ($country as $co)
+        @php
+          $tour_count = App\Models\Backend\TourModel::where('country_id','like','%"'.@$co->id.'"%')->count();
+        @endphp
+
+        <a href="{{ url('clients-review/'.(@$co->id ?? 0).'/0') }}"
+           class="group relative block rounded-[26px] bg-gradient-to-br from-orange-200/40 via-rose-200/30 to-amber-200/40 p-[1px] hover:shadow-xl hover:shadow-orange-100/60 transition">
+
+          <!-- การ์ดด้านใน -->
+          <div class="relative overflow-hidden rounded-[24px] bg-white ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-0.5">
+            <!-- รูป -->
+            <div class="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden">
+              <img
+                src="https://nexttripholiday.b-cdn.net/{{ @$co->img_banner }}"
+                alt="{{ @$co->country_name_th }}"
+                loading="lazy"
+                class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]">
+              <!-- gradient ซ้อนบนรูป -->
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
+
+              <!-- ชิปมุมบน (ซ้าย: ไอคอนประเทศ/ท่องเที่ยว) -->
+              <div class="absolute left-3 top-3 flex items-center gap-2">
+                <span class="inline-grid h-9 w-9 place-items-center rounded-lg bg-white/90 backdrop-blur-sm ring-1 ring-black/5 shadow">
+                  <!-- airplane -->
+                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M10.5 12.75l-6.364 6.364a.75.75 0 001.06 1.06L12 13.06l6.803 7.115a.75.75 0 001.198-.905l-7.5-18a.75.75 0 00-1.386 0l-7.5 18a.75.75 0 001.198.905L10.5 12.75z"/>
+                  </svg>
                 </span>
-                <h2 class="text-2xl font-bold text-orange-500">ประเทศยอดนิยม</h2>
+              </div>
+
+              <!-- ชิปมุมบนขวา: จำนวนโปรแกรม -->
+              <div class="absolute right-3 top-3 rounded-full bg-orange-500/80 px-3 py-1 text-xs font-semibold text-white ring-1 ring-black/5 shadow">
+                {{ number_format($tour_count) }} โปรแกรม
+              </div>
+
+              <!-- ข้อความล่าง -->
+              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white">
+                <div class="flex items-end justify-between gap-3">
+                  <div>
+                    <div class="text-lg md:text-xl font-extrabold drop-shadow-sm">{{ @$co->country_name_th }}</div>
+                    <div class="mt-0.5 text-[13px] md:text-sm text-white/85 font-medium">
+                      สำรวจแพ็คเกจยอดนิยม พร้อมดีลพิเศษ
+                    </div>
+                  </div>
+                  <span class="hidden md:inline-flex items-center gap-1 rounded-full bg-blue-900/80 px-3 py-1 text-sm font-semibold ring-1 ring-white/20 backdrop-blur-sm">
+                    ดูแพ็คเกจ
+                    <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
             </div>
-
-            <!-- กริดการ์ด -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- การ์ด: ญี่ปุ่น -->
-                @foreach (@$country as $co)
-                    @php
-                        $tour_count = App\Models\Backend\TourModel::where(
-                            'country_id',
-                            'like',
-                            '%"' . @$co->id . '"%',
-                        )->count();
-                    @endphp
-                    <a href="#"
-                        class="group relative overflow-hidden rounded-2xl shadow-sm ring-1 ring-black/5 bg-slate-200">
-                        <img src="https://nexttripholiday.b-cdn.net/{{ @$co->img_banner }}" alt="ญี่ปุ่น"
-                            class="h-48 sm:h-56 w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-                        <!-- gradient -->
-                        <div
-                            class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-                        </div>
-                        <!-- ข้อความ -->
-                        <div class="absolute inset-x-0 bottom-0 p-4 text-white drop-shadow-md">
-                            <div class="text-xl font-extrabold">{{ @$co->country_name_th }}</div>
-                            <div class="mt-1 text-sm font-semibold"> จำนวน <span class="tracking-tight">
-                                    {{ number_format(@$tour_count) }} โปรแกรมทัวร์ </span></div>
-                        </div>
-                    </a>
-                @endforeach
-
-
-            </div>
-        </div>
-    </section>
+          </div>
+        </a>
+      @endforeach
+    </div>
+  </div>
+</section>
 
     <!-- โปรโมชั่นแพ็คเกจทัวร์  https://www.nexttripholiday.com/promotiontour/0/0-->
     <!-- โปรโมชั่นแพ็คเกจทัวร์ (Infinite Loop) -->
@@ -789,7 +823,7 @@
 
 <section id="why" class="mx-auto max-w-7xl px-4 py-16">
   <div class="text-center max-w-2xl mx-auto">
-    <h2 class="text-2xl md:text-3xl font-bold text-slate-800">ทำไมลูกค้าเลือกเรา</h2>
+    <h2 class="text-2xl md:text-3xl font-bold text-orange-500">ทำไมลูกค้าเลือกเรา</h2>
     <p class="mt-4 text-slate-600">โครงสร้างบริการครบวงจร คัดกรองคุณภาพคู่ค้า และระบบดูแลลูกค้าหลังการขาย</p>
   </div>
 
@@ -840,7 +874,7 @@
           </span>
 
           <div>
-            <h3 class="font-semibold text-slate-800 mb-1">{{ $w['title'] }}</h3>
+            <h3 class="font-semibold text-blue-900 mb-1">{{ $w['title'] }}</h3>
             <p class="text-sm text-slate-600 leading-relaxed">{{ $w['desc'] }}</p>
           </div>
         </div>
@@ -857,9 +891,9 @@
     <section id="booking" class="mx-auto max-w-7xl px-4 pb-20">
         <div
             class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-50 via-white to-sky-50 ring-1 ring-slate-200 p-10 md:p-16 flex flex-col items-center text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 max-w-2xl">พร้อมเริ่มการเดินทางครั้งใหม่แล้วหรือยัง?
+            <h2 class="text-2xl md:text-3xl font-bold text-orange-500 max-w-2xl">พร้อมเริ่มการเดินทางครั้งใหม่แล้วหรือยัง?
             </h2>
-            <p class="mt-4 text-slate-600 max-w-xl">ค้นหาทริป หรือเลือกจากแพ็คเกจยอดนิยมแล้วจองทันที</p>
+            <p class="mt-4 text-blue-900 max-w-xl">ค้นหาทริป หรือเลือกจากแพ็คเกจยอดนิยมแล้วจองทันที</p>
             <div class="mt-8 flex flex-col sm:flex-row gap-4">
                 <a href="https://nexttripholiday.com/search-tour"
                     class="inline-flex items-center justify-center gap-2 rounded-full bg-orange-600 px-8 py-3 text-white text-sm font-semibold shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">ค้นหาทัวร์ที่ใช่</a>
@@ -1036,6 +1070,74 @@
   })();
 </script>
 
+<!-- Clients / Trusted by -->
+<section id="clients" class="py-16">
+  <div class="mx-auto max-w-7xl px-4">
+    <h2 class="text-center text-2xl md:text-3xl font-bold text-blue-800">
+      ลูกค้าที่ไว้วางใจเรา <span class="text-orange-600">Next Trip Holiday</span>
+    </h2>
+
+    <!-- Marquee container -->
+    <div class="relative mt-8 group overflow-hidden">
+      <!-- edge fades -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent"></div>
+
+      <!-- track: duplicate 2 รอบเพื่อวิ่งต่อเนื่อง -->
+      <div class="flex items-center gap-10 animate-logo-marquee group-hover:[animation-play-state:paused] [--speed:28s]">
+        @foreach ($customer as $cus)
+          <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" class="shrink-0" title="{{ $cus->title ?? 'ลูกค้า' }}">
+            <img
+              src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}"
+              alt="https://nexttripholiday.b-cdn.net/{{ $cus->title ?? 'ลูกค้า' }}"
+              loading="lazy"
+              class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition"
+            >
+          </a>
+        @endforeach
+
+        {{-- สำเนาชุดที่ 2 เพื่อให้เลื่อนต่อเนื่องไร้รอยต่อ --}}
+        @foreach ($customer as $cus)
+          <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" aria-hidden="true" class="shrink-0">
+            <img
+              src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}"
+              alt=""
+              loading="lazy"
+              class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition"
+            >
+          </a>
+        @endforeach
+      </div>
+    </div>
+
+    <!-- ปุ่มดูทั้งหมด (ถ้าต้องการ) -->
+    <div class="mt-8 text-center">
+      <a href="https://nexttripholiday.com/clients-review/0/0"
+         class="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-3 transition-all">
+        ดูผลงานลูกค้าทั้งหมด
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* งูกินหาง: มี 2 ชุดโลโก้เรียงต่อกัน เลื่อน -50% เท่าความกว้างชุดแรกพอดี */
+  @keyframes logo-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-logo-marquee {
+    animation: logo-marquee var(--speed, 28s) linear infinite;
+    will-change: transform;
+  }
+  /* เคารพผู้ใช้ที่ปิดแอนิเมชัน: ให้เลื่อนเองด้วยการรูดแทน */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-logo-marquee { animation: none; }
+  }
+</style>
 
     
 
