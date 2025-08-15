@@ -17,25 +17,91 @@
         <div class="absolute inset-0 grid place-items-center ">
             <div class="w-full max-w-2xl px-3 text-center text-white ">
                 <h1 class="text-3xl font-bold sm:text-5xl">สำรวจโลกกว้างกับเรา</h1>
-                <p class="mt-2 text-white/80">ดีลทัวร์ต่างประเทศประจำสัปดาห์ อัปเดตราคาเรียลไทม์</p>
+                <p class="mt-2 mb-2 text-white/80">ดีลทัวร์ต่างประเทศประจำสัปดาห์ อัปเดตราคาเรียลไทม์</p>
 
-                <form class="mx-auto mt-6 grid grid-cols-1 gap-2 sm:grid-cols-5 ">
-                    <input
-                        class="sm:col-span-2 rounded-lg border border-white/30 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/70 focus:border-white focus:ring-2 focus:ring-white focus:outline-none"
-                        placeholder="ปลายทาง" autocomplete="off">
-                    <input type="date"
-                        class="rounded-lg border border-orange/30 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/70 focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
-                    <select
-                        class="rounded-lg border border-orange/30 bg-white/10 px-3 py-2 text-sm text-white focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
-                        <option class="text-gray-900">ทั้งหมด</option>
-                        <option class="text-gray-900">กรุ๊ปทัวร์</option>
-                        <option class="text-gray-900">ส่วนตัว</option>
-                    </select>
-                    <button
-                        class="rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
-                        ค้นหา
-                    </button>
+                <form action="https://nexttripholiday.com//search-tour/" method="GET" enctype="multipart/form-data" id="searchForm"
+                    class="mx-auto max-w-6xl">
+                  
+
+                    <div class="grid grid-cols-2 md:grid-cols-12 gap-3 text-white">
+
+                        {{-- คำค้น --}}
+                        <div class="relative md:col-span-6">
+                            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 opacity-90">
+                                <svg viewBox="0 0 24 24" class="h-5 w-5">
+                                    <path d="M11 4a7 7 0 105.29 12.29l3.7 3.7 1.42-1.42-3.7-3.7A7 7 0 0011 4z"
+                                        fill="currentColor" />
+                                </svg>
+                            </span>
+                            <input type="text" name="search_data" id="search_data"
+                                placeholder="ประเทศ, เมือง, สถานที่ท่องเที่ยว"
+                                class="h-11 w-full rounded-lg border border-white/30 bg-white/10 pl-9 pr-3 text-sm placeholder-white/70
+                                       focus:border-white focus:ring-2 focus:ring-white focus:outline-none"
+                                onkeyup="SearchData()" onfocusout="HideSearch()"
+                                onfocus="$('#search_famus').show();$('#livesearch').show()">
+
+                            {{-- livesearch / famous --}}
+                            <div id="livesearch"
+                                class="absolute z-50 mt-1 w-full rounded-lg bg-white text-slate-800 ring-1 ring-slate-200 shadow-lg hidden">
+                            </div>
+
+                            <div id="search_famus"
+                                class="absolute z-40 mt-1 w-full rounded-lg bg-white text-slate-800 ring-1 ring-slate-200 shadow hidden">
+                            </div>
+                        </div>
+
+                        {{-- วันที่ไป --}}
+                        <div class="md:col-span-3">
+                            <input type="date" name="start_date" id="start_date"
+                                class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm
+                    focus:border-white focus:ring-2 focus:ring-white focus:outline-none [color:inherit]">
+                        </div>
+
+                        {{-- วันที่กลับ --}}
+                        <div class="md:col-span-3">
+                            <input type="date" name="end_date" id="end_date"
+                                class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm
+                    focus:border-white focus:ring-2 focus:ring-white focus:outline-none [color:inherit]">
+                        </div>
+
+                        {{-- ช่วงราคา --}}
+                        <div class="relative md:col-span-6">
+                            <select name="price"
+                                class="h-11 w-full appearance-none rounded-lg border border-white/30 bg-white/10 px-3 pr-8 text-sm
+                     focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
+                                <option value="" selected class="text-gray-900">ช่วงราคา</option>
+                                <option value="1" class="text-gray-900">ต่ำกว่า10,000</option>
+                                <option value="2" class="text-gray-900">10,001-20,000</option>
+                                <option value="3" class="text-gray-900">20,001-30,000</option>
+                                <option value="4" class="text-gray-900">30,001-50,000</option>
+                                <option value="5" class="text-gray-900">50,001-80,000</option>
+                                <option value="5" class="text-gray-900">80,001 ขึ้นไป</option>
+                            </select>
+                            {{-- caret ของ select --}}
+                            <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-80"
+                                viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z" />
+                            </svg>
+                        </div>
+
+                        {{-- รหัสทัวร์ --}}
+                        <div class="md:col-span-6">
+                            <input type="text" name="code_tour" placeholder="รหัสทัวร์"
+                                class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm placeholder-white/70
+                    focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
+                        </div>
+
+                        {{-- ปุ่มค้นหา (เต็มแถวด้านล่าง) --}}
+                        <div class="md:col-span-12">
+                            <button type="submit"
+                                class="h-11 w-full rounded-lg bg-orange-500 px-4 text-sm font-semibold text-white
+                     hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-white/80">
+                                ค้นหาทัวร์
+                            </button>
+                        </div>
+                    </div>
                 </form>
+
             </div>
         </div>
     </section>
@@ -46,87 +112,102 @@
 
 
     <!-- แพ็คเกจทัวร์แนะนำในต่างแดน (เด่นขึ้น) -->
-<section class="relative py-12">
-  <!-- พื้นหลังไล่สี + แสงเบลอ -->
-  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-orange-50 via-white to-sky-50"></div>
-  <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(240,116,47,0.12),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(56,189,248,0.12),transparent_60%)]"></div>
+    <section class="relative py-12">
+        <!-- พื้นหลังไล่สี + แสงเบลอ -->
+        <div class="absolute inset-0 -z-10 bg-gradient-to-br from-orange-50 via-white to-sky-50"></div>
+        <div
+            class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(240,116,47,0.12),transparent_55%),radial-gradient(ellipse_at_bottom_right,rgba(56,189,248,0.12),transparent_60%)]">
+        </div>
 
-  <div class="mx-auto max-w-7xl px-4">
-    <!-- หัวข้อ -->
-    <div class="mb-6 flex items-center gap-3">
-      <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow ring-1 ring-black/5">
-        <!-- icon pin -->
-        <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]">
-          <path fill="currentColor" d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/>
-        </svg>
-      </span>
-      <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
-        ประเทศยอดนิยม
-      </h2>
-    </div>
-
-    <!-- กริดการ์ด -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @foreach ($country as $co)
-        @php
-          $tour_count = App\Models\Backend\TourModel::where('country_id','like','%"'.@$co->id.'"%')->count();
-        @endphp
-
-        <a href="{{ url('clients-review/'.(@$co->id ?? 0).'/0') }}"
-           class="group relative block rounded-[26px] bg-gradient-to-br from-orange-200/40 via-rose-200/30 to-amber-200/40 p-[1px] hover:shadow-xl hover:shadow-orange-100/60 transition">
-
-          <!-- การ์ดด้านใน -->
-          <div class="relative overflow-hidden rounded-[24px] bg-white ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-0.5">
-            <!-- รูป -->
-            <div class="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden">
-              <img
-                src="https://nexttripholiday.b-cdn.net/{{ @$co->img_banner }}"
-                alt="{{ @$co->country_name_th }}"
-                loading="lazy"
-                class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]">
-              <!-- gradient ซ้อนบนรูป -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent"></div>
-
-              <!-- ชิปมุมบน (ซ้าย: ไอคอนประเทศ/ท่องเที่ยว) -->
-              <div class="absolute left-3 top-3 flex items-center gap-2">
-                <span class="inline-grid h-9 w-9 place-items-center rounded-lg bg-white/90 backdrop-blur-sm ring-1 ring-black/5 shadow">
-                  <!-- airplane -->
-                  <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M10.5 12.75l-6.364 6.364a.75.75 0 001.06 1.06L12 13.06l6.803 7.115a.75.75 0 001.198-.905l-7.5-18a.75.75 0 00-1.386 0l-7.5 18a.75.75 0 001.198.905L10.5 12.75z"/>
-                  </svg>
-                </span>
-              </div>
-
-              <!-- ชิปมุมบนขวา: จำนวนโปรแกรม -->
-              <div class="absolute right-3 top-3 rounded-full bg-orange-500/80 px-3 py-1 text-xs font-semibold text-white ring-1 ring-black/5 shadow">
-                {{ number_format($tour_count) }} โปรแกรม
-              </div>
-
-              <!-- ข้อความล่าง -->
-              <div class="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white">
-                <div class="flex items-end justify-between gap-3">
-                  <div>
-                    <div class="text-lg md:text-xl font-extrabold drop-shadow-sm">{{ @$co->country_name_th }}</div>
-                    <div class="mt-0.5 text-[13px] md:text-sm text-white/85 font-medium">
-                      สำรวจแพ็คเกจยอดนิยม พร้อมดีลพิเศษ
-                    </div>
-                  </div>
-                  <span class="hidden md:inline-flex items-center gap-1 rounded-full bg-blue-900/80 px-3 py-1 text-sm font-semibold ring-1 ring-white/20 backdrop-blur-sm">
-                    ดูแพ็คเกจ
-                    <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/>
+        <div class="mx-auto max-w-7xl px-4">
+            <!-- หัวข้อ -->
+            <div class="mb-6 flex items-center gap-3">
+                <span
+                    class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow ring-1 ring-black/5">
+                    <!-- icon pin -->
+                    <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]">
+                        <path fill="currentColor"
+                            d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z" />
                     </svg>
-                  </span>
-                </div>
-              </div>
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+                    ประเทศยอดนิยม
+                </h2>
             </div>
-          </div>
-        </a>
-      @endforeach
-    </div>
-  </div>
-</section>
+
+            <!-- กริดการ์ด -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach ($country as $co)
+                    @php
+                        $tour_count = App\Models\Backend\TourModel::where(
+                            'country_id',
+                            'like',
+                            '%"' . @$co->id . '"%',
+                        )->count();
+                    @endphp
+
+                    <a href="https://nexttripholiday.com/clients-review/{{ @$co->id ?? 0 }}/0"
+                        class="group relative block rounded-[26px] bg-gradient-to-br from-orange-200/40 via-rose-200/30 to-amber-200/40 p-[1px] hover:shadow-xl hover:shadow-orange-100/60 transition">
+
+                        <!-- การ์ดด้านใน -->
+                        <div
+                            class="relative overflow-hidden rounded-[24px] bg-white ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-0.5">
+                            <!-- รูป -->
+                            <div class="relative aspect-[4/3] lg:aspect-[3/2] overflow-hidden">
+                                <img src="https://nexttripholiday.b-cdn.net/{{ @$co->img_banner }}"
+                                    alt="{{ @$co->country_name_th }}" loading="lazy"
+                                    class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]">
+                                <!-- gradient ซ้อนบนรูป -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent">
+                                </div>
+
+                                <!-- ชิปมุมบน (ซ้าย: ไอคอนประเทศ/ท่องเที่ยว) -->
+                                <div class="absolute left-3 top-3 flex items-center gap-2">
+                                    <span
+                                        class="inline-grid h-9 w-9 place-items-center rounded-lg bg-white/90 backdrop-blur-sm ring-1 ring-black/5 shadow">
+                                        <!-- airplane -->
+                                        <svg viewBox="0 0 24 24" class="h-5 w-5 text-[#f0742f]" fill="none"
+                                            stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 12.75l-6.364 6.364a.75.75 0 001.06 1.06L12 13.06l6.803 7.115a.75.75 0 001.198-.905l-7.5-18a.75.75 0 00-1.386 0l-7.5 18a.75.75 0 001.198.905L10.5 12.75z" />
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <!-- ชิปมุมบนขวา: จำนวนโปรแกรม -->
+                                <div
+                                    class="absolute right-3 top-3 rounded-full bg-orange-500/80 px-3 py-1 text-xs font-semibold text-white ring-1 ring-black/5 shadow">
+                                    {{ number_format($tour_count) }} โปรแกรม
+                                </div>
+
+                                <!-- ข้อความล่าง -->
+                                <div class="absolute inset-x-0 bottom-0 p-4 md:p-5 text-white">
+                                    <div class="flex items-end justify-between gap-3">
+                                        <div>
+                                            <div class="text-lg md:text-xl font-extrabold drop-shadow-sm">
+                                                {{ @$co->country_name_th }}</div>
+                                            <div class="mt-0.5 text-[13px] md:text-sm text-white/85 font-medium">
+                                                สำรวจแพ็คเกจยอดนิยม พร้อมดีลพิเศษ
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="hidden md:inline-flex items-center gap-1 rounded-full bg-blue-900/80 px-3 py-1 text-sm font-semibold ring-1 ring-white/20 backdrop-blur-sm">
+                                            ดูแพ็คเกจ
+                                            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none"
+                                                stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M5 12h14m-7-7l7 7-7 7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
     <!-- โปรโมชั่นแพ็คเกจทัวร์  https://www.nexttripholiday.com/promotiontour/0/0-->
     <!-- โปรโมชั่นแพ็คเกจทัวร์ (Infinite Loop) -->
@@ -648,7 +729,7 @@
 
 
 
-{{-- 
+    {{-- 
     <!-- Tour Categories (booking intent) -->
     <section id="categories" class="mx-auto max-w-7xl px-4 pb-24">
         <h2 class="text-2xl font-bold text-slate-800 mb-8">เลือกสไตล์ทัวร์ของคุณ</h2>
@@ -787,8 +868,9 @@
         <div class="mx-auto max-w-7xl px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
             <div>
                 <h2 class="text-2xl md:text-3xl font-bold leading-tight">ระวัง !! กลุ่มมิจฉาชีพขายทัวร์และบริการอื่นๆ</h2>
-                <p class="mt-4 text-white/90 max-w-prose">โดยแอบอ้างใช้ชื่อบริษัทเน็กซ์ ทริป ฮอลิเดย์ กรุณาชำระค่าบริการผ่านธนาคารชื่อบัญชีบริษัท "เน็กซ์ ทริป ฮอลิเดย์ จำกัด" เท่านั้น</p>
-               
+                <p class="mt-4 text-white/90 max-w-prose">โดยแอบอ้างใช้ชื่อบริษัทเน็กซ์ ทริป ฮอลิเดย์
+                    กรุณาชำระค่าบริการผ่านธนาคารชื่อบัญชีบริษัท "เน็กซ์ ทริป ฮอลิเดย์ จำกัด" เท่านั้น</p>
+
             </div>
             <ul class="space-y-4 text-sm" aria-label="benefits">
                 <li class="flex items-start gap-3"><span
@@ -811,80 +893,92 @@
     </section>
 
     <!-- Why Us -->
-<!-- Why Us -->
-@php
-  $why = [
-    ['title' => 'ทัวร์คุณภาพ', 'desc' => 'เราบริการทัวร์คุณภาพมากมาย เพื่อให้ลูกค้าประทับใจในทุกทริป', 'icon' => 'plane'],
-    ['title' => 'เที่ยวครบ คุ้ม', 'desc' => 'เที่ยวครบตามโปรแกรม คุ้มค่าทุกบาททุกสตางค์', 'icon' => 'list'],
-    ['title' => 'เชื่อถือได้', 'desc' => 'ประสบการณ์มากกว่า 15 ปี กับวงการท่องเที่ยว', 'icon' => 'shield'],
-    ['title' => 'ส่วนลดพิเศษ', 'desc' => 'รับส่วนลด/โปรพิเศษ อัปเดตทุกวัน', 'icon' => 'discount'],
-  ];
-@endphp
+    <!-- Why Us -->
+    @php
+        $why = [
+            [
+                'title' => 'ทัวร์คุณภาพ',
+                'desc' => 'เราบริการทัวร์คุณภาพมากมาย เพื่อให้ลูกค้าประทับใจในทุกทริป',
+                'icon' => 'plane',
+            ],
+            ['title' => 'เที่ยวครบ คุ้ม', 'desc' => 'เที่ยวครบตามโปรแกรม คุ้มค่าทุกบาททุกสตางค์', 'icon' => 'list'],
+            ['title' => 'เชื่อถือได้', 'desc' => 'ประสบการณ์มากกว่า 15 ปี กับวงการท่องเที่ยว', 'icon' => 'shield'],
+            ['title' => 'ส่วนลดพิเศษ', 'desc' => 'รับส่วนลด/โปรพิเศษ อัปเดตทุกวัน', 'icon' => 'discount'],
+        ];
+    @endphp
 
-<section id="why" class="mx-auto max-w-7xl px-4 py-16">
-  <div class="text-center max-w-2xl mx-auto">
-    <h2 class="text-2xl md:text-3xl font-bold text-orange-500">ทำไมลูกค้าเลือกเรา</h2>
-    <p class="mt-4 text-slate-600">โครงสร้างบริการครบวงจร คัดกรองคุณภาพคู่ค้า และระบบดูแลลูกค้าหลังการขาย</p>
-  </div>
+    <section id="why" class="mx-auto max-w-7xl px-4 py-16">
+        <div class="text-center max-w-2xl mx-auto">
+            <h2 class="text-2xl md:text-3xl font-bold text-orange-500">ทำไมลูกค้าเลือกเรา</h2>
+            <p class="mt-4 text-slate-600">โครงสร้างบริการครบวงจร คัดกรองคุณภาพคู่ค้า และระบบดูแลลูกค้าหลังการขาย</p>
+        </div>
 
-  <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    @foreach ($why as $w)
-      <div class="group rounded-2xl border border-slate-200 p-6 bg-white/70 backdrop-blur-sm hover:shadow-md transition">
-        <div class="flex items-start gap-4">
-          <!-- Icon bubble -->
-          <span class="relative grid h-12 w-12 place-items-center rounded-xl
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            @foreach ($why as $w)
+                <div
+                    class="group rounded-2xl border border-slate-200 p-6 bg-white/70 backdrop-blur-sm hover:shadow-md transition">
+                    <div class="flex items-start gap-4">
+                        <!-- Icon bubble -->
+                        <span
+                            class="relative grid h-12 w-12 place-items-center rounded-xl
                        bg-gradient-to-br from-orange-50 to-amber-100
                        ring-1 ring-orange-200/70 shadow-sm
                        group-hover:scale-105 transition">
-            @switch($w['icon'])
-              @case('plane')
-                <!-- airplane -->
-                <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M10.5 12.75l-6.364 6.364a.75.75 0 001.06 1.06L12 13.06l6.803 7.115a.75.75 0 001.198-.905l-7.5-18a.75.75 0 00-1.386 0l-7.5 18a.75.75 0 001.198.905L10.5 12.75z"/>
-                </svg>
-              @break
+                            @switch($w['icon'])
+                                @case('plane')
+                                    <!-- airplane -->
+                                    <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none"
+                                        stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M10.5 12.75l-6.364 6.364a.75.75 0 001.06 1.06L12 13.06l6.803 7.115a.75.75 0 001.198-.905l-7.5-18a.75.75 0 00-1.386 0l-7.5 18a.75.75 0 001.198.905L10.5 12.75z" />
+                                    </svg>
+                                @break
 
-              @case('list')
-                <!-- checklist -->
-                <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path stroke-linecap="round" d="M4 7h8M4 12h8M4 17h8"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 7l2 2 4-4M14 12l2 2 4-4M14 17l2 2 4-4"/>
-                </svg>
-              @break
+                                @case('list')
+                                    <!-- checklist -->
+                                    <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none"
+                                        stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" d="M4 7h8M4 12h8M4 17h8" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14 7l2 2 4-4M14 12l2 2 4-4M14 17l2 2 4-4" />
+                                    </svg>
+                                @break
 
-              @case('shield')
-                <!-- shield check -->
-                <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path stroke-linejoin="round" d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 12l2 2 4-4"/>
-                </svg>
-              @break
+                                @case('shield')
+                                    <!-- shield check -->
+                                    <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none"
+                                        stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linejoin="round" d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12l2 2 4-4" />
+                                    </svg>
+                                @break
 
-              @case('discount')
-                <!-- discount / percent tag -->
-                <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path stroke-linejoin="round" d="M3 8a2 2 0 012-2h8l3 3v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
-                  <path stroke-linecap="round" d="M8 14l6-6"/>
-                  <circle cx="7" cy="9" r="1.3" fill="currentColor"/>
-                  <circle cx="13" cy="15" r="1.3" fill="currentColor"/>
-                </svg>
-              @break
-            @endswitch
-          </span>
+                                @case('discount')
+                                    <!-- discount / percent tag -->
+                                    <svg viewBox="0 0 24 24" class="h-6 w-6 text-orange-600" fill="none"
+                                        stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linejoin="round"
+                                            d="M3 8a2 2 0 012-2h8l3 3v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                                        <path stroke-linecap="round" d="M8 14l6-6" />
+                                        <circle cx="7" cy="9" r="1.3" fill="currentColor" />
+                                        <circle cx="13" cy="15" r="1.3" fill="currentColor" />
+                                    </svg>
+                                @break
+                            @endswitch
+                        </span>
 
-          <div>
-            <h3 class="font-semibold text-blue-900 mb-1">{{ $w['title'] }}</h3>
-            <p class="text-sm text-slate-600 leading-relaxed">{{ $w['desc'] }}</p>
-          </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-900 mb-1">{{ $w['title'] }}</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">{{ $w['desc'] }}</p>
+                        </div>
+                    </div>
+
+                    <!-- subtle divider -->
+                    <div class="mt-4 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+                </div>
+            @endforeach
         </div>
-
-        <!-- subtle divider -->
-        <div class="mt-4 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-      </div>
-    @endforeach
-  </div>
-</section>
+    </section>
 
 
     <!-- Booking CTA -->
@@ -921,227 +1015,259 @@
         </div>
     </section> --}}
 
-	<!-- Reviews (ใหม่) -->
-<section id="reviews" class="bg-white">
-  <div class="mx-auto max-w-7xl px-4 py-5">
-    <div class="flex items-end justify-between gap-4">
-      <div class="text-center md:text-left max-w-2xl">
-        <h2 class="text-2xl md:text-3xl font-bold text-orange-500">เสียงจากลูกค้าจริง</h2>
-        <p class="mt-2 text-slate-600">บางส่วนของประสบการณ์ที่น่าประทับใจ</p>
-      </div>
+    <!-- Reviews (ใหม่) -->
+    <section id="reviews" class="bg-white">
+        <div class="mx-auto max-w-7xl px-4 py-5">
+            <div class="flex items-end justify-between gap-4">
+                <div class="text-center md:text-left max-w-2xl">
+                    <h2 class="text-2xl md:text-3xl font-bold text-orange-500">เสียงจากลูกค้าจริง</h2>
+                    <p class="mt-2 text-slate-600">บางส่วนของประสบการณ์ที่น่าประทับใจ</p>
+                </div>
 
-      <a href="{{ url('clients-review/0/0') }}"
-         class="hidden md:inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-3 transition-all">
-        ดูรีวิวทั้งหมด
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-
-    <!-- แทร็ครีวิวเลื่อนซ้าย/ขวา -->
-    <div class="relative mt-6">
-      <!-- ปุ่มเลื่อน -->
-      <button id="revPrev"
-              class="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:grid h-10 w-10 place-items-center rounded-full bg-white/90 ring-1 ring-slate-200 shadow hover:bg-white">
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-        </svg>
-      </button>
-      <button id="revNext"
-              class="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:grid h-10 w-10 place-items-center rounded-full bg-white/90 ring-1 ring-slate-200 shadow hover:bg-white">
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-        </svg>
-      </button>
-
-      <!-- แถวรีวิว -->
-      <div id="revTrack"
-           class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 md:pb-4
-                  [scrollbar-width:none] [-ms-overflow-style:none]">
-        <!-- ซ่อนสกอร์บาร์บน WebKit -->
-        <style>
-          #revTrack::-webkit-scrollbar{display:none}
-          .line-clamp-3{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
-        </style>
-
-        @foreach ($review as $re)
-          @php
-            $countries = \App\Models\Backend\CountryModel::whereIn(
-              'id', json_decode($re->country_id, true) ?? []
-            )->get();
-            $rating = $re->rating ?? 5;
-          @endphp
-
-          <!-- การ์ดรีวิว -->
-          <article class="rev-card snap-start shrink-0 w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px]
-                          bg-white overflow-hidden rounded-2xl ring-1 ring-slate-200 shadow-sm">
-            <a href="https://nexttripholiday.com/clients-review/0/0" class="block group">
-              <div class="relative aspect-[4/3] overflow-hidden">
-                <img src="https://nexttripholiday.b-cdn.net/{{ $re->img }}" alt="{{ $re->title }}"
-                     class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]">
-              </div>
-
-              <div class="p-5">
-                <!-- ดาว -->
-                <div class="flex items-center gap-[2px] text-amber-500">
-                  @for($i=1;$i<=5;$i++)
-                    <svg viewBox="0 0 24 24" class="h-[18px] w-[18px] {{ $i <= round($rating) ? 'fill-current' : 'fill-slate-300 text-slate-300' }}">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                <a href="{{ url('clients-review/0/0') }}"
+                    class="hidden md:inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-3 transition-all">
+                    ดูรีวิวทั้งหมด
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
                     </svg>
-                  @endfor
-                </div>
+                </a>
+            </div>
 
-                <h3 class="mt-2 font-semibold text-slate-800">{{ $re->title }}</h3>
-                <p class="mt-1 text-sm text-slate-600 line-clamp-3">
-                  {!! strip_tags($re->detail) !!}
-                </p>
+            <!-- แทร็ครีวิวเลื่อนซ้าย/ขวา -->
+            <div class="relative mt-6">
+                <!-- ปุ่มเลื่อน -->
+                <button id="revPrev"
+                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:grid h-10 w-10 place-items-center rounded-full bg-white/90 ring-1 ring-slate-200 shadow hover:bg-white">
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button id="revNext"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:grid h-10 w-10 place-items-center rounded-full bg-white/90 ring-1 ring-slate-200 shadow hover:bg-white">
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
 
-                <div class="mt-4 flex items-center gap-3">
-                  <img src="https://nexttripholiday.b-cdn.net/{{ $re->profile }}" class="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200" alt="">
-                  <div class="leading-tight">
-                    <div class="font-medium text-slate-800">{{ $re->name }}</div>
-                    <div class="text-xs text-slate-500">ทริป{{ $re->trip }}</div>
-                  </div>
-                </div>
+                <!-- แถวรีวิว -->
+                <div id="revTrack"
+                    class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 md:pb-4
+                  [scrollbar-width:none] [-ms-overflow-style:none]">
+                    <!-- ซ่อนสกอร์บาร์บน WebKit -->
+                    <style>
+                        #revTrack::-webkit-scrollbar {
+                            display: none
+                        }
 
-                @if($countries->count())
-                  <div class="mt-3 flex flex-wrap gap-2">
-                    @foreach ($countries as $c)
-                      <a href="{{ url('clients-review/'.$c->id.'/0') }}"
-                         class="text-xs px-2 py-1 rounded-full bg-orange-500 text-white hover:bg-slate-200">
-                        #{{ $c->country_name_th }}
-                      </a>
+                        .line-clamp-3 {
+                            display: -webkit-box;
+                            -webkit-box-orient: vertical;
+                            -webkit-line-clamp: 3;
+                            overflow: hidden
+                        }
+                    </style>
+
+                    @foreach ($review as $re)
+                        @php
+                            $countries = \App\Models\Backend\CountryModel::whereIn(
+                                'id',
+                                json_decode($re->country_id, true) ?? [],
+                            )->get();
+                            $rating = $re->rating ?? 5;
+                        @endphp
+
+                        <!-- การ์ดรีวิว -->
+                        <article
+                            class="rev-card snap-start shrink-0 w-[280px] sm:w-[320px] md:w-[360px] lg:w-[380px]
+                          bg-white overflow-hidden rounded-2xl ring-1 ring-slate-200 shadow-sm">
+                            <a href="https://nexttripholiday.com/clients-review/0/0" class="block group">
+                                <div class="relative aspect-[4/3] overflow-hidden">
+                                    <img src="https://nexttripholiday.b-cdn.net/{{ $re->img }}"
+                                        alt="{{ $re->title }}"
+                                        class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]">
+                                </div>
+
+                                <div class="p-5">
+                                    <!-- ดาว -->
+                                    <div class="flex items-center gap-[2px] text-amber-500">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg viewBox="0 0 24 24"
+                                                class="h-[18px] w-[18px] {{ $i <= round($rating) ? 'fill-current' : 'fill-slate-300 text-slate-300' }}">
+                                                <path
+                                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                            </svg>
+                                        @endfor
+                                    </div>
+
+                                    <h3 class="mt-2 font-semibold text-slate-800">{{ $re->title }}</h3>
+                                    <p class="mt-1 text-sm text-slate-600 line-clamp-3">
+                                        {!! strip_tags($re->detail) !!}
+                                    </p>
+
+                                    <div class="mt-4 flex items-center gap-3">
+                                        <img src="https://nexttripholiday.b-cdn.net/{{ $re->profile }}"
+                                            class="h-9 w-9 rounded-full object-cover ring-1 ring-slate-200"
+                                            alt="">
+                                        <div class="leading-tight">
+                                            <div class="font-medium text-slate-800">{{ $re->name }}</div>
+                                            <div class="text-xs text-slate-500">ทริป{{ $re->trip }}</div>
+                                        </div>
+                                    </div>
+
+                                    @if ($countries->count())
+                                        <div class="mt-3 flex flex-wrap gap-2">
+                                            @foreach ($countries as $c)
+                                                <a href="{{ url('clients-review/' . $c->id . '/0') }}"
+                                                    class="text-xs px-2 py-1 rounded-full bg-orange-500 text-white hover:bg-slate-200">
+                                                    #{{ $c->country_name_th }}
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </a>
+                        </article>
                     @endforeach
-                  </div>
-                @endif
-              </div>
-            </a>
-          </article>
-        @endforeach
-      </div>
-    </div>
+                </div>
+            </div>
 
-    <!-- ปุ่มดูทั้งหมด (มือถือ) -->
-    <div class="mt-6 md:hidden text-center">
-      <a href="https://nexttripholiday.com/clients-review/0/0"
-         class="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 text-white text-sm font-semibold shadow hover:bg-orange-700">
-        ดูรีวิวทั้งหมด
-      </a>
-    </div>
+            <!-- ปุ่มดูทั้งหมด (มือถือ) -->
+            <div class="mt-6 md:hidden text-center">
+                <a href="https://nexttripholiday.com/clients-review/0/0"
+                    class="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 text-white text-sm font-semibold shadow hover:bg-orange-700">
+                    ดูรีวิวทั้งหมด
+                </a>
+            </div>
 
-  </div>
-</section>
+        </div>
+    </section>
 
-<!-- JS: ปุ่มซ้าย/ขวา สำหรับเลื่อนแถวรีวิว -->
-<script>
-  (function () {
-    const track = document.getElementById('revTrack');
-    if (!track) return;
+    <!-- JS: ปุ่มซ้าย/ขวา สำหรับเลื่อนแถวรีวิว -->
+    <script>
+        (function() {
+            const track = document.getElementById('revTrack');
+            if (!track) return;
 
-    const prevBtn = document.getElementById('revPrev');
-    const nextBtn = document.getElementById('revNext');
+            const prevBtn = document.getElementById('revPrev');
+            const nextBtn = document.getElementById('revNext');
 
-    function step() {
-      const card = track.querySelector('.rev-card');
-      if (!card) return 320; // fallback
-      const style = getComputedStyle(track);
-      const gap = parseInt(style.columnGap || style.gap || 24, 10);
-      return card.getBoundingClientRect().width + gap;
-    }
+            function step() {
+                const card = track.querySelector('.rev-card');
+                if (!card) return 320; // fallback
+                const style = getComputedStyle(track);
+                const gap = parseInt(style.columnGap || style.gap || 24, 10);
+                return card.getBoundingClientRect().width + gap;
+            }
 
-    prevBtn?.addEventListener('click', () =>
-      track.scrollBy({ left: -step(), behavior: 'smooth' })
-    );
-    nextBtn?.addEventListener('click', () =>
-      track.scrollBy({ left:  step(), behavior: 'smooth' })
-    );
+            prevBtn?.addEventListener('click', () =>
+                track.scrollBy({
+                    left: -step(),
+                    behavior: 'smooth'
+                })
+            );
+            nextBtn?.addEventListener('click', () =>
+                track.scrollBy({
+                    left: step(),
+                    behavior: 'smooth'
+                })
+            );
 
-    // แสดง/ซ่อนปุ่มอัตโนมัติเมื่อสุดขอบ
-    function toggleArrows() {
-      if (!prevBtn || !nextBtn) return;
-      const maxScrollLeft = track.scrollWidth - track.clientWidth - 1;
-      prevBtn.style.visibility = track.scrollLeft <= 0 ? 'hidden' : 'visible';
-      nextBtn.style.visibility = track.scrollLeft >= maxScrollLeft ? 'hidden' : 'visible';
-    }
-    track.addEventListener('scroll', toggleArrows, { passive: true });
-    window.addEventListener('resize', toggleArrows);
-    toggleArrows();
-  })();
-</script>
+            // แสดง/ซ่อนปุ่มอัตโนมัติเมื่อสุดขอบ
+            function toggleArrows() {
+                if (!prevBtn || !nextBtn) return;
+                const maxScrollLeft = track.scrollWidth - track.clientWidth - 1;
+                prevBtn.style.visibility = track.scrollLeft <= 0 ? 'hidden' : 'visible';
+                nextBtn.style.visibility = track.scrollLeft >= maxScrollLeft ? 'hidden' : 'visible';
+            }
+            track.addEventListener('scroll', toggleArrows, {
+                passive: true
+            });
+            window.addEventListener('resize', toggleArrows);
+            toggleArrows();
+        })();
+    </script>
 
-<!-- Clients / Trusted by -->
-<section id="clients" class="py-16">
-  <div class="mx-auto max-w-7xl px-4">
-    <h2 class="text-center text-2xl md:text-3xl font-bold text-blue-800">
-      ลูกค้าที่ไว้วางใจเรา <span class="text-orange-600">Next Trip Holiday</span>
-    </h2>
+    <!-- Clients / Trusted by -->
+    <section id="clients" class="py-16">
+        <div class="mx-auto max-w-7xl px-4">
+            <h2 class="text-center text-2xl md:text-3xl font-bold text-blue-800">
+                ลูกค้าที่ไว้วางใจเรา <span class="text-orange-600">Next Trip Holiday</span>
+            </h2>
 
-    <!-- Marquee container -->
-    <div class="relative mt-8 group overflow-hidden">
-      <!-- edge fades -->
-      <div class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent"></div>
-      <div class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent"></div>
+            <!-- Marquee container -->
+            <div class="relative mt-8 group overflow-hidden">
+                <!-- edge fades -->
+                <div class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent">
+                </div>
+                <div
+                    class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent">
+                </div>
 
-      <!-- track: duplicate 2 รอบเพื่อวิ่งต่อเนื่อง -->
-      <div class="flex items-center gap-10 animate-logo-marquee group-hover:[animation-play-state:paused] [--speed:28s]">
-        @foreach ($customer as $cus)
-          <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" class="shrink-0" title="{{ $cus->title ?? 'ลูกค้า' }}">
-            <img
-              src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}"
-              alt="https://nexttripholiday.b-cdn.net/{{ $cus->title ?? 'ลูกค้า' }}"
-              loading="lazy"
-              class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition"
-            >
-          </a>
-        @endforeach
+                <!-- track: duplicate 2 รอบเพื่อวิ่งต่อเนื่อง -->
+                <div
+                    class="flex items-center gap-10 animate-logo-marquee group-hover:[animation-play-state:paused] [--speed:28s]">
+                    @foreach ($customer as $cus)
+                        <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" class="shrink-0"
+                            title="{{ $cus->title ?? 'ลูกค้า' }}">
+                            <img src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}"
+                                alt="https://nexttripholiday.b-cdn.net/{{ $cus->title ?? 'ลูกค้า' }}" loading="lazy"
+                                class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition">
+                        </a>
+                    @endforeach
 
-        {{-- สำเนาชุดที่ 2 เพื่อให้เลื่อนต่อเนื่องไร้รอยต่อ --}}
-        @foreach ($customer as $cus)
-          <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" aria-hidden="true" class="shrink-0">
-            <img
-              src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}"
-              alt=""
-              loading="lazy"
-              class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition"
-            >
-          </a>
-        @endforeach
-      </div>
-    </div>
+                    {{-- สำเนาชุดที่ 2 เพื่อให้เลื่อนต่อเนื่องไร้รอยต่อ --}}
+                    @foreach ($customer as $cus)
+                        <a href="https://nexttripholiday.b-cdn.net/{{ $cus->id }}" aria-hidden="true"
+                            class="shrink-0">
+                            <img src="https://nexttripholiday.b-cdn.net/{{ $cus->logo }}" alt=""
+                                loading="lazy"
+                                class="h-12 sm:h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition">
+                        </a>
+                    @endforeach
+                </div>
+            </div>
 
-    <!-- ปุ่มดูทั้งหมด (ถ้าต้องการ) -->
-    <div class="mt-8 text-center">
-      <a href="https://nexttripholiday.com/clients-review/0/0"
-         class="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-3 transition-all">
-        ดูผลงานลูกค้าทั้งหมด
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
+            <!-- ปุ่มดูทั้งหมด (ถ้าต้องการ) -->
+            <div class="mt-8 text-center">
+                <a href="https://nexttripholiday.com/clients-review/0/0"
+                    class="inline-flex items-center gap-2 text-orange-600 font-semibold hover:gap-3 transition-all">
+                    ดูผลงานลูกค้าทั้งหมด
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
 
-<style>
-  /* งูกินหาง: มี 2 ชุดโลโก้เรียงต่อกัน เลื่อน -50% เท่าความกว้างชุดแรกพอดี */
-  @keyframes logo-marquee {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  .animate-logo-marquee {
-    animation: logo-marquee var(--speed, 28s) linear infinite;
-    will-change: transform;
-  }
-  /* เคารพผู้ใช้ที่ปิดแอนิเมชัน: ให้เลื่อนเองด้วยการรูดแทน */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-logo-marquee { animation: none; }
-  }
-</style>
+    <style>
+        /* งูกินหาง: มี 2 ชุดโลโก้เรียงต่อกัน เลื่อน -50% เท่าความกว้างชุดแรกพอดี */
+        @keyframes logo-marquee {
+            0% {
+                transform: translateX(0);
+            }
 
-    
+            100% {
+                transform: translateX(-50%);
+            }
+        }
 
-    <!-- Newsletter -->
+        .animate-logo-marquee {
+            animation: logo-marquee var(--speed, 28s) linear infinite;
+            will-change: transform;
+        }
+
+        /* เคารพผู้ใช้ที่ปิดแอนิเมชัน: ให้เลื่อนเองด้วยการรูดแทน */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-logo-marquee {
+                animation: none;
+            }
+        }
+    </style>
+
+
+
+    {{-- <!-- Newsletter -->
     <section id="subscribe" class="bg-gradient-to-r from-amber-500 via-orange-600 to-orange-700 text-white">
         <div class="mx-auto max-w-5xl px-4 py-14 md:py-16 text-center">
             <h2 class="text-2xl md:text-3xl font-bold">รับดีลพิเศษก่อนใคร</h2>
@@ -1155,7 +1281,7 @@
             </form>
             <p class="mt-4 text-xs text-white/70">เราไม่ส่งสแปม และไม่ขายข้อมูลส่วนบุคคล</p>
         </div>
-    </section>
+    </section> --}}
 
     @php
         $schema = [
