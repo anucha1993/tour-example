@@ -1,15 +1,66 @@
-@extends('layouts.app')
+@extends('newhome.layouts.app')
 
-@section('title', 'จองทัวร์ ราคาพิเศษ | Tour Booking')
-@section('meta_description',
-    'จองแพ็คเกจทัวร์ในประเทศและต่างประเทศ ราคาพิเศษ อัปเดตทุกสัปดาห์
-    คัดสรรโดยผู้เชี่ยวชาญด้านท่องเที่ยว')
+
+{{-- ======= HEAD (หน้าแรก) ======= --}}
+@section('title', 'Next Trip Holiday | บริษัททัวร์ต่างประเทศ ราคาคุ้ม บริการครบ')
+@section('meta_description', 'จองแพ็กเกจทัวร์ญี่ปุ่น เกาหลี ไต้หวัน รวมถึงทัวร์เอเชียและยุโรป ราคาคุ้ม อัปเดตทุกสัปดาห์ บริการมืออาชีพ ไกด์ดูแลตลอดทริป ปลอดภัยและเชื่อถือได้')
+
+{{-- แนะนำให้ลบ meta keywords ทิ้ง (ไม่จำเป็นสำหรับ Google) --}}
+
+{{-- Canonical (กันเนื้อหาซ้ำ) --}}
+<link rel="canonical" href="https://nexttripholiday.com/"/>
+
+{{-- Robots (หน้าแรกให้ index ได้) --}}
+<meta name="robots" content="index, follow"/>
+
+{{-- Open Graph / Twitter: ใช้ข้อความเดียวกับ Title/Description เพื่อกันความสับสน --}}
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Next Trip Holiday | บริษัททัวร์ต่างประเทศ ราคาคุ้ม บริการครบ"/>
+<meta property="og:description" content="จองแพ็กเกจทัวร์ญี่ปุ่น เกาหลี ไต้หวัน รวมถึงทัวร์เอเชียและยุโรป ราคาคุ้ม อัปเดตทุกสัปดาห์ บริการมืออาชีพ ไกด์ดูแลตลอดทริป ปลอดภัยและเชื่อถือได้"/>
+<meta property="og:url" content="https://nexttripholiday.com/"/>
+<meta property="og:site_name" content="Next Trip Holiday"/>
+<meta property="og:image" content="https://nexttripholiday.b-cdn.net/og/nexttriphome.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="แพ็กเกจทัวร์ต่างประเทศ Next Trip Holiday"/>
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Next Trip Holiday | บริษัททัวร์ต่างประเทศ ราคาคุ้ม บริการครบ"/>
+<meta name="twitter:description" content="จองแพ็กเกจทัวร์ญี่ปุ่น เกาหลี ไต้หวัน รวมถึงทัวร์เอเชียและยุโรป ราคาคุ้ม อัปเดตทุกสัปดาห์ บริการมืออาชีพ ไกด์ดูแลตลอดทริป"/>
+<meta name="twitter:image" content="https://nexttripholiday.b-cdn.net/og/nexttriphome.jpg"/>
+
+{{-- JSON-LD: Organization + WebSite + SearchAction --}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Next Trip Holiday",
+  "url": "https://nexttripholiday.com/",
+  "logo": "https://nexttripholiday.b-cdn.net/brand/logo-512.png",
+  "sameAs": [
+    "https://www.facebook.com/nexttripholiday" 
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "url":"https://nexttripholiday.com/",
+  "name":"Next Trip Holiday",
+  "potentialAction":{
+    "@type":"SearchAction",
+    "target":"https://nexttripholiday.com/search?q={query}",
+    "query-input":"required name=query"
+  }
+}
+</script>
 
 @section('content')
+<h1 class="sr-only">Next Trip Holiday — บริษัททัวร์ต่างประเทศ ราคาคุ้ม บริการครบ</h1>
 
 
- {{-- <section class="relative h-[60vh] max-h-[60vh] overflow-hidden"> --}}
-    <section class="relative isolate overflow-hidden h-[60vh] max-h-[60vh]">
+      <section class="relative isolate overflow-hidden h-[60vh] max-h-[60vh]">
   {{-- แทร็คสไลด์ --}}
   <div id="hero" class="h-full w-full">
     <div id="heroTrack"
@@ -21,7 +72,7 @@
             <source media="(min-width:1024px)" srcset="https://nexttripholiday.b-cdn.net/{{ $s->img }}">
             <img
               src="https://nexttripholiday.b-cdn.net/{{ $s->img_mobile }}"
-              alt="slide- {!! $s->detail !!}"
+              alt="slide"
               class="absolute inset-0 h-full w-full object-cover object-center" />
           </picture>
 
@@ -30,7 +81,7 @@
 
           {{-- คำบรรยายจาก backend (จะอยู่มุมล่างซ้าย) --}}
           @if(!empty($s->detail))
-            <div class="absolute bottom-4 left-4 right-4 z-10 text-white drop-shadow text-center">
+            <div class="absolute bottom-4 left-4 right-4 z-10 text-white drop-shadow">
               {!! $s->detail !!}
             </div>
           @endif
@@ -59,74 +110,90 @@
       <p class="mt-2 mb-4 text-white/85">ดีลทัวร์ต่างประเทศประจำสัปดาห์ อัปเดตราคาเรียลไทม์</p>
 
       {{-- ฟอร์มค้นหาแบบเบา --}}
-      <form action="https://nexttripholiday.com/search-tour" method="GET" id="searchForm">
-        
-        <div class="grid grid-cols-2 md:grid-cols-12 gap-3">
-          {{-- คำค้น --}}
-          <div class="relative md:col-span-6">
-            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 opacity-90">
-              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
-                <path d="M11 4a7 7 0 105.29 12.29l3.7 3.7 1.42-1.42-3.7-3.7A7 7 0 0011 4z"/>
-              </svg>
-            </span>
-            <input type="text" name="search_data" id="search_data"
-                   placeholder="ประเทศ, เมือง, สถานที่ท่องเที่ยว"
-                   class="h-11 w-full rounded-lg border border-white/30 bg-white/10 pl-9 pr-3 text-sm placeholder-white/70
-                          focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
-          </div>
+      <form action="{{ url('search-tour') }}" method="GET" class="mx-auto w-full max-w-3xl">
+  <!-- กล่องค้นหาแบบเบลอ -->
+  <div class="rounded-2xl bg-white/15 backdrop-blur-md ring-1 text-slate-600 ring-white/30 shadow-lg p-3 sm:p-4
+              grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 text-white">
 
-          {{-- วันที่ไป --}}
-          <div class="md:col-span-3">
-            <input type="date" name="start_date" id="start_date"
-                   class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm
-                          focus:border-white focus:ring-2 focus:ring-white focus:outline-none [color:inherit]">
-          </div>
+    <!-- คำค้น -->
+    <div class="relative sm:col-span-6">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 opacity-90 text-slate-600">
+        <svg viewBox="0 0 24 24" class="h-5 w-5"><path d="M11 4a7 7 0 105.29 12.29l3.7 3.7 1.42-1.42-3.7-3.7A7 7 0 0011 4z" fill="currentColor"/></svg>
+      </span>
 
-          {{-- วันที่กลับ --}}
-          <div class="md:col-span-3">
-            <input type="date" name="end_date" id="end_date"
-                   class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm 
-                          focus:border-white focus:ring-2 focus:ring-white focus:outline-none [color:inherit]" readonly>
-          </div>
+  <!-- คำค้น -->
+<div class="relative sm:col-span-6">
+  <span class="absolute left-3 top-1/2 -translate-y-1/2 opacity-90 text-slate-600">
+    <svg viewBox="0 0 24 24" class="h-5 w-5"><path d="M11 4a7 7 0 105.29 12.29l3.7 3.7 1.42-1.42-3.7-3.7A7 7 0 0011 4z" fill="currentColor"/></svg>
+  </span>
 
-          {{-- ช่วงราคา --}}
-          <div class="relative md:col-span-6">
-            <select name="price"
-                    class="h-11 w-full appearance-none rounded-lg border border-white/30 bg-white/10 px-3 pr-8 text-sm
-                           focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
-              <option value="" selected class="text-gray-900">ช่วงราคา</option>
-              <option value="1" class="text-gray-900">ต่ำกว่า10,000</option>
-              <option value="2" class="text-gray-900">10,001-20,000</option>
-              <option value="3" class="text-gray-900">20,001-30,000</option>
-              <option value="4" class="text-gray-900">30,001-50,000</option>
-              <option value="5" class="text-gray-900">50,001-80,000</option>
-              <option value="5" class="text-gray-900">80,001 ขึ้นไป</option>
-            </select>
-            <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-80"
-                 viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
-          </div>
+  <input id="search_data" name="search_data" autocomplete="on"
+         placeholder="ประเทศ, เมือง, สถานที่ท่องเที่ยว"
+         class="h-12 w-full rounded-lg border text-slate-900 border-white/30 bg-white/10 pl-10 pr-3 text-sm placeholder-text-slate-900
+                focus:border-white focus:ring-2 focus:ring-white focus:outline-none" />
 
-          {{-- รหัสทัวร์ --}}
-          <div class="md:col-span-6">
-            <input type="text" name="code_tour" placeholder="รหัสทัวร์"
-                   class="h-11 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm placeholder-white/70
-                          focus:border-white focus:ring-2 focus:ring-white focus:outline-none">
-          </div>
+  <!-- ⬇️ กล่องผลลัพธ์ “มีแค่ชุดเดียว” ห้ามซ้ำ id -->
+  <div id="livesearch"   class="nt-suggest hidden"></div>
+  <div id="search_famus" class="nt-suggest hidden"></div>
+</div>
 
-          {{-- ปุ่มค้นหา --}}
-          <div class="md:col-span-12">
-            <button type="submit"
-                    class="h-11 w-full rounded-lg bg-orange-500 px-4 text-sm font-semibold text-white
-                           hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-white/80">
-              ค้นหาทัวร์
-            </button>
-          </div>
-        </div>
-      </form>
+      <!-- ถ้ามี live search เดิมของคุณจะใช้งานร่วมได้ -->
+      <div id="livesearch" class="hidden"></div>
+      <div id="search_famus" class="hidden"></div>
+    </div>
+
+    <!-- วันที่ (ช่วงเดียว) -->
+    <div class="relative sm:col-span-6">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 opacity-90 text-slate-600">
+        <svg viewBox="0 0 24 24" class="h-5 w-5"><path d="M7 2h10a3 3 0 013 3v14a3 3 0 01-3 3H7a3 3 0 01-3-3V5a3 3 0 013-3zm2 6h6v2H9V8z" fill="currentColor"/></svg>
+      </span>
+      <input id="date_range" type="text" readonly
+             placeholder="ช่วงวันที่"
+             class="h-12 w-full rounded-lg border border-white/30 bg-white/10 pl-10 pr-3 text-sm text-slate-600 placeholder-white/70
+                    focus:border-white focus:ring-2 focus:ring-white focus:outline-none" />
+      <!-- ค่าเริ่ม-จบจริง ส่งเข้าแบ็กเอนด์ -->
+      <input type="hidden" id="start_date" name="start_date">
+      <input type="hidden" id="end_date"   name="end_date">
+    </div>
+
+    <!-- ช่วงราคา -->
+    <div class="sm:col-span-6">
+      <select name="price"
+              class="h-12 w-full appearance-none rounded-lg border border-white/30 bg-blue/5 px-3 text-sm
+                     focus:border-white focus:ring-2 focus:ring-white focus:outline-none text-slate-600">
+        <option value="">ช่วงราคา</option>
+        <option value="1">ต่ำกว่า 10,000</option>
+        <option value="2">10,001–20,000</option>
+        <option value="3">20,001–30,000</option>
+        <option value="4">30,001–50,000</option>
+        <option value="5">50,001–80,000</option>
+        <option value="6">80,001 ขึ้นไป</option>
+      </select>
+    </div>
+
+    <!-- รหัสทัวร์ -->
+    <div class="sm:col-span-3">
+      <input type="text" name="code_tour" placeholder="รหัสทัวร์"
+             class="h-12 w-full rounded-lg border border-white/30 bg-white/10 px-3 text-sm placeholder-text-slate-900 text-slate-900
+                    focus:border-white focus:ring-2 focus:ring-white focus:outline-none" />
+    </div>
+
+    <!-- ปุ่มค้นหา -->
+    <div class="sm:col-span-3">
+      <button type="submit"
+              class="h-12 w-full rounded-lg bg-orange-500 text-sm font-semibold text-white
+                     hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-white/80">
+        ค้นหาทัวร์
+      </button>
+    </div>
+  </div>
+</form>
+
     </div>
     </div>
   </div>
 </section>
+
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css">
@@ -134,25 +201,46 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // กำหนดจำนวนเดือนตามขนาดจอ (มือถือ 1 เดือน, จอใหญ่ 2 เดือน)
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
     const picker = new Litepicker({
-      element: document.getElementById('start_date'),
-      elementEnd: document.getElementById('end_date'),
-      singleMode: false,               // ใช้โหมดช่วงวันที่
-      numberOfMonths: 2,               // แสดง 2 เดือน
-      numberOfColumns: 2,
-      autoApply: true,                 // กดเลือกแล้วใส่ค่าให้เลย
-      resetButton: true,
-      format: 'YYYY-MM-DD',            // ฟอร์แมตค่าที่ส่งไป backend
-      minDate: new Date().toISOString().slice(0,10), // ไม่ให้เลือกย้อนหลังวันนี้
-      tooltipText: {one: 'night', other: 'nights'},  // ข้อความ tooltip (ตัดได้)
+      element: document.getElementById('date_range'),
+      singleMode: false,                       // โหมดช่วงวัน
+      autoApply: true,                         // เลือกแล้วใส่ค่าให้เลย
+      numberOfMonths:  isDesktop ? 2 : 1,
+      numberOfColumns: isDesktop ? 2 : 1,
+      minDate: new Date().toISOString().slice(0,10),
+      format: 'DD/MM/YYYY',                    // รูปแบบที่แสดงในช่องเดียว
+      tooltipText: {one: 'คืน', other: 'คืน'}, // ข้อความ tooltip (ลบได้)
+      setup: (inst) => {
+        inst.on('selected', (d1, d2) => {
+          const f = (d) => d ? d.format('YYYY-MM-DD') : '';
+          document.getElementById('start_date').value = f(d1);
+          document.getElementById('end_date').value   = f(d2);
+        });
+      }
     });
 
-    // ตั้งค่าเริ่มต้นเป็นวันนี้ - อีก 1 วัน (เลือกได้ จะลบทิ้งก็ได้)
+    // ค่าเริ่มต้น: วันนี้ → พรุ่งนี้
     const today = new Date();
     const tomorrow = new Date(today.getTime() + 86400000);
     picker.setDateRange(today, tomorrow);
-  });
+    document.getElementById('start_date').value = today.toISOString().slice(0,10);
+    document.getElementById('end_date').value   = tomorrow.toISOString().slice(0,10);
 
+    // อัปเดตจำนวนเดือนเมื่อปรับขนาดหน้าจอ (ถ้าต้องการ)
+    window.addEventListener('resize', () => {
+      const desktopNow = window.matchMedia('(min-width: 768px)').matches;
+      picker.setOptions({
+        numberOfMonths:  desktopNow ? 2 : 1,
+        numberOfColumns: desktopNow ? 2 : 1
+      });
+    });
+  });
+</script>
+
+<script>
   // ฟังก์ชันเรียกจากเมนูมือถือ (ถ้าใช้)
   function closeMobileMenu(){
     const panel = document.getElementById('mobileMenu');
@@ -182,10 +270,6 @@
   next.addEventListener('click', () => go(1));
 })();
 </script>
-
-
-
-
 
 
     <!-- แพ็คเกจทัวร์แนะนำในต่างแดน (เด่นขึ้น) -->
@@ -223,7 +307,7 @@
                         )->count();
                     @endphp
 
-                    <a href="https://nexttripholiday.com/clients-review/{{ @$co->id ?? 0 }}/0"
+                    <a href="https://nexttripholiday.com/oversea/{{ @$co->country_name_en}}"
                         class="group relative block rounded-[26px] bg-gradient-to-br from-orange-200/40 via-rose-200/30 to-amber-200/40 p-[1px] hover:shadow-xl hover:shadow-orange-100/60 transition">
 
                         <!-- การ์ดด้านใน -->
@@ -250,6 +334,8 @@
                                         </svg>
                                     </span>
                                 </div>
+                                {{-- <input type="text" ao> --}}
+                                
 
                                 <!-- ชิปมุมบนขวา: จำนวนโปรแกรม -->
                                 <div
@@ -264,7 +350,7 @@
                                             <div class="text-lg md:text-xl font-extrabold drop-shadow-sm">
                                                 {{ @$co->country_name_th }}</div>
                                             <div class="mt-0.5 text-[13px] md:text-sm text-white/85 font-medium">
-                                                สำรวจแพ็คเกจยอดนิยม พร้อมดีลพิเศษ
+                                              {!! @$co->description !!}
                                             </div>
                                         </div>
                                         <span
@@ -761,184 +847,7 @@
         </div>
     </section>
 
-    {{-- <!-- Popular Tours -->
-    <section id="popular" class="mx-auto max-w-7xl px-4 pt-14 pb-20">
-        <div class="flex items-end justify-between mb-6">
-            <h2 class="text-2xl font-bold text-slate-800">แพ็คเกจยอดนิยม</h2>
-            <a href="#" class="text-sm font-medium text-orange-600 hover:text-orange-700">ดูทั้งหมด →</a>
-        </div>
-        @php
-            $baseParams = 'auto=compress&fit=crop&q=60&fm=webp&w=600';
-            $tours = [
-                [
-                    'title' => 'ญี่ปุ่น ฟูจิ',
-                    'duration' => '5 วัน 3 คืน',
-                    'price' => 'เริ่ม 32,900',
-                    'image' => "https://images.unsplash.com/photo-1506744038136-46273834b3fb?$baseParams",
-                    'availability' => 'เปิด 6 ที่',
-                ],
-                [
-                    'title' => 'เกาหลี โซล',
-                    'duration' => '4 วัน 3 คืน',
-                    'price' => 'เริ่ม 18,500',
-                    'image' =>
-                        'https://plus.unsplash.com/premium_photo-1661886323367-fc6579695eba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8S29yZWElMkMlMjBTZW91bHxlbnwwfHwwfHx8MA%3D%3D',
-                    'availability' => 'เหลือ 4 ที่',
-                ],
-                [
-                    'title' => 'จีน พรีเมียม',
-                    'duration' => '6 วัน 4 คืน',
-                    'price' => 'เริ่ม 29,900',
-                    'image' =>
-                        'https://images.unsplash.com/photo-1507904309054-5d475df55c14?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fEhvbmclMjBLb25nfGVufDB8fDB8fHww',
-                    'availability' => 'รับเพิ่ม',
-                ],
-            ];
-        @endphp
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($tours as $tour)
-                <x-tour-card :image="$tour['image']" :title="$tour['title']" :duration="$tour['duration']" :price="$tour['price']" :availability="$tour['availability']" />
-            @endforeach
-        </div>
-    </section>
- --}}
-
-
-
-
-    {{-- 
-    <!-- Tour Categories (booking intent) -->
-    <section id="categories" class="mx-auto max-w-7xl px-4 pb-24">
-        <h2 class="text-2xl font-bold text-slate-800 mb-8">เลือกสไตล์ทัวร์ของคุณ</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-sm">
-            @foreach ([['ทะเล & พักผ่อน', 'beach', 'ทัวร์ทะเล ดำน้ำ พักรีสอร์ท'], ['ธรรมชาติ & ภูเขา', 'mountain', 'เดินป่า ซากุระ ใบไม้เปลี่ยนสี'], ['ช้อปปิ้ง & เมือง', 'city', 'ช้อปปิ้ง เอาต์เล็ท เมืองใหญ่'], ['อาหาร & วัฒนธรรม', 'food', 'ลิ้มรสท้องถิ่น เวิร์คช็อปวัฒนธรรม']] as $c)
-                <a href="#"
-                    class="group rounded-2xl border border-slate-200 p-5 bg-white hover:shadow-md transition flex flex-col">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span
-                            class="h-9 w-9 rounded-full bg-orange-50 grid place-content-center text-orange-600 text-xs font-semibold ring-1 ring-orange-600/20">{{ strtoupper(substr($c[1], 0, 2)) }}</span>
-                        <h3 class="font-semibold text-slate-800 group-hover:text-orange-600">{{ $c[0] }}</h3>
-                    </div>
-                    <p class="text-slate-500 text-xs leading-relaxed flex-1">{{ $c[2] }}</p>
-                    <span class="mt-4 inline-flex items-center gap-1 text-orange-600 text-xs font-medium">ดูแพ็คเกจ <svg
-                            class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
-                        </svg></span>
-                </a>
-            @endforeach
-        </div>
-    </section>
-
-    <!-- Booking Steps (improved layout) -->
-    <section id="steps" class="bg-gradient-to-b from-amber-50/40 to-white">
-        <div class="mx-auto max-w-7xl px-4 py-20">
-            <h2 class="text-2xl font-bold text-slate-800 text-center mb-12">ขั้นตอนการจองง่ายๆ 4 ขั้น</h2>
-            <div class="grid gap-5 md:grid-cols-4">
-                @foreach ([['ส่งคำค้นหา', 'กรอกปลายทาง งบประมาณ หรือเลือกแพ็คเกจที่สนใจ'], ['รับใบเสนอราคา', 'ทีมงานสรุปรายการ โปรแกรม และราคาโปรโมชัน'], ['ยืนยัน & ชำระ', 'ชำระด้วยช่องทางที่สะดวก อัปเดตสถานะเรียลไทม์'], ['เตรียมเดินทาง', 'รับเอกสารการเดินทาง eVoucher / รายละเอียดไกด์']] as $i => $s)
-                    <div
-                        class="relative rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 p-6 flex flex-col overflow-hidden group">
-                        <span
-                            class="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-orange-50 ring-1 ring-orange-500/10"></span>
-                        <div class="flex items-center gap-3 mb-3 relative">
-                            <span
-                                class="h-9 w-9 rounded-full bg-orange-600 text-white text-sm font-semibold grid place-content-center shadow">{{ $i + 1 }}</span>
-                            <h3 class="font-semibold text-slate-800 group-hover:text-orange-600 transition">
-                                {{ $s[0] }}</h3>
-                        </div>
-                        <p class="text-xs text-slate-500 leading-relaxed flex-1">{{ $s[1] }}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    <!-- removed stray closing tags from previous template experiment --> --}}
-
-    <!-- Upcoming Departures Table -->
-    {{-- <section id="departures" class="mx-auto max-w-7xl px-4 pt-8 pb-28">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-slate-800">รอบเดินทางใกล้เต็ม</h2>
-            <a href="#" class="text-sm font-medium text-orange-600 hover:text-orange-700">ดูรอบทั้งหมด →</a>
-        </div>
-        <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <table class="min-w-full text-sm">
-                <thead class="bg-slate-50 text-slate-600">
-                    <tr>
-                        <th class="px-5 py-3 text-left font-semibold w-[40%]">แพ็คเกจ</th>
-                        <th class="px-3 py-3 text-left font-semibold">เดินทาง</th>
-                        <th class="px-3 py-3 text-center font-semibold w-24">ที่ว่าง</th>
-                        <th class="px-3 py-3 text-right font-semibold w-28">ราคา</th>
-                        <th class="px-4 py-3 w-32"></th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    @foreach ([['ญี่ปุ่น ฟูจิ ซากุระ', '15 เม.ย. 68', '6', '32,900'], ['เกาหลี โซล ใบไม้ผลิ', '22 เม.ย. 68', '4', '18,500'], ['จีน พรีเมียม เซี่ยงไฮ้', '3 พ.ค. 68', '8', '29,900'], ['เวียดนาม ฮาลองเบย์', '10 พ.ค. 68', '5', '16,900']] as $d)
-                        <tr class="hover:bg-amber-50/40 transition">
-                            <td class="px-5 py-3 font-medium text-slate-800">{{ $d[0] }}</td>
-                            <td class="px-3 py-3 text-slate-500">{{ $d[1] }}</td>
-                            <td class="px-3 py-3 text-center">
-                                <span
-                                    class="inline-flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-[11px] font-semibold h-7 w-12 ring-1 ring-emerald-500/20">{{ $d[2] }}</span>
-                            </td>
-                            <td class="px-3 py-3 text-right text-orange-700 font-semibold">{{ $d[3] }} ฿</td>
-                            <td class="px-4 py-3 text-right"><a href="#"
-                                    class="inline-flex items-center text-orange-600 text-xs font-medium hover:text-orange-700">ดูรายละเอียด
-                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
-                                    </svg></a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </section> --}}
-
-    <!-- Destinations -->
-    {{-- <section id="destinations" class="bg-gradient-to-b from-white to-amber-50/40">
-        <div class="mx-auto max-w-7xl px-4 py-16">
-            <div class="flex items-end justify-between mb-8">
-                <h2 class="text-2xl font-bold text-slate-800">ปลายทางยอดฮิต</h2>
-                <a href="#" class="text-sm font-medium text-orange-600 hover:text-orange-700">สำรวจทั้งหมด →</a>
-            </div>
-            @php
-                $destinations = [
-                    [
-                        'title' => 'ญี่ปุ่น',
-                        'count' => '1745 โปรแกรม',
-                        'image' =>
-                            'https://images.unsplash.com/photo-1688616128916-9c4f4a612e33?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fFRvcmlpJTIwU2hyaW5lJTJDJTIwSmFwYW58ZW58MHx8MHx8fDA%3D',
-                        'alt' => 'ศาลเจ้าโทริอิ ญี่ปุ่น',
-                    ],
-                    [
-                        'title' => 'เวียดนาม',
-                        'count' => '794 โปรแกรม',
-                        'image' =>
-                            'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=600&q=70',
-                        'alt' => 'ฮาลองเบย์ เวียดนาม',
-                    ],
-                    [
-                        'title' => 'จีน',
-                        'count' => '3179 โปรแกรม',
-                        'image' =>
-                            'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=600&q=70',
-                        'alt' => 'เสาหินอุทยานจางเจียเจี้ย จีน',
-                    ],
-                    [
-                        'title' => 'ฮ่องกง',
-                        'count' => '681 โปรแกรม',
-                        'image' =>
-                            'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=70',
-                        'alt' => 'สกายไลน์ฮ่องกงยามค่ำ',
-                    ],
-                ];
-            @endphp
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                @foreach ($destinations as $d)
-                    <x-destination-card :image="$d['image']" :alt="$d['alt']" :title="$d['title']" :count="$d['count']" />
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
+    
 
     <!-- Promo Banner -->
     <section id="promo" class="bg-gradient-to-r from-orange-600 to-orange-700 text-white">
@@ -1414,6 +1323,219 @@
     </script>
 
     <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!}</script>
+
+
+    <!-- ===== CSS เบา ๆ ===== -->
+<style>
+  .nt-suggest{
+    position:absolute; inset-inline:0; top:100%; margin-top:.5rem;
+    z-index:99999; background:#fff; border:1px solid rgba(0,0,0,.06);
+    border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08);
+    max-height:clamp(260px,60vh,520px); overflow-y:auto;
+    -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+  /* ตัวห่อบนสุด (portal) เอาไว้ย้ายกล่องออกจาก section ที่ overflow-hidden */
+  #nt-portal{ position:fixed; z-index:2147483647; left:0; top:0; width:0; height:0; pointer-events:none; }
+  /* แทนบรรทัดเดิมของ #nt-portal .nt-suggest ทั้งกลุ่ม */
+#nt-portal .nt-suggest{
+  position: fixed;            /* เด็ดขาดว่าอิง viewport */
+  left: 0; top: 0;            /* แล้วค่อยเลื่อนด้วย transform */
+  width: var(--nt-w, 320px);
+  transform: translate(var(--nt-x,0px), var(--nt-y,0px));
+  pointer-events: auto;
+  margin: 0;
+
+  background:#fff; border:1px solid rgba(0,0,0,.06);
+  border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+  max-height: clamp(260px, 60vh, 520px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+  .nt-suggest::-webkit-scrollbar{ width:10px; }
+  .nt-suggest::-webkit-scrollbar-thumb{ background:#e5e7eb; border-radius:999px; border:2px solid #fff; }
+
+  .nt-sec{ padding:12px 14px; border-top:1px solid #f2f2f2; }
+  .nt-sec:first-child{ border-top:none; }
+  .nt-sec h6{ margin:0 0 6px; font:600 13px/1.2 ui-sans-serif,system-ui; color:#4b5563; position:sticky; top:0; background:#fff; z-index:1; padding-top:12px; }
+  .nt-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; }
+  .nt-row:hover{ background:#f8fafc; }
+  .nt-flag{ width:24px; height:18px; object-fit:cover; border-radius:3px; }
+  .nt-chipwrap{ display:flex; flex-wrap:wrap; gap:8px; }
+  .nt-chip{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid #e5e7eb; background:#fff; cursor:pointer; }
+  .nt-chip:hover{ background:#f8fafc; }
+</style>
+
+
+<!-- ===== JS เติมรายการ + ดักคลิกแล้วใส่ค่า ===== -->
+<script>
+(function(){
+  const $input  = document.getElementById('search_data');
+  const $live   = document.getElementById('livesearch');
+  const $famus  = document.getElementById('search_famus');
+  if(!$input || !$live || !$famus) return;
+
+  // ----- สร้าง portal แล้ว “ย้ายกล่อง” ออกไปอยู่บน body เพื่อชนะ overflow/z-index -----
+  let portal = document.getElementById('nt-portal');
+  if(!portal){
+    portal = document.createElement('div');
+    portal.id = 'nt-portal';
+    document.body.appendChild(portal);
+  }
+  portal.appendChild($live);
+  portal.appendChild($famus);
+
+  // ----- วางตำแหน่งกล่องตาม input -----
+  function place(){
+  const r   = $input.getBoundingClientRect();
+  const gap = 8;                       // ระยะห่างใต้ช่อง
+  const x   = Math.round(r.left);      // อิงพิกัด viewport
+  const y   = Math.round(r.bottom + gap);
+
+  [$live, $famus].forEach(el=>{
+    el.style.setProperty('--nt-x', x + 'px');
+    el.style.setProperty('--nt-y', y + 'px');
+    el.style.setProperty('--nt-w', r.width + 'px');
+  });
+}
+
+
+  // ----- utils -----
+  const norm = s => String(s||'').trim();
+  const has  = a => Array.isArray(a) && a.length>0;
+  const esc  = s => String(s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m]));
+  const show = el => (el.classList.remove('hidden'), place());
+  const hide = el => el.classList.add('hidden');
+  const hideAll = () => { hide($live); hide($famus); };
+
+  function pick(text){
+    $input.value = text;
+    $input.dispatchEvent(new Event('input', {bubbles:true}));
+    hideAll();
+    $input.focus();
+  }
+
+  // ----- render “ยอดนิยม/คำค้นฮิต” -----
+  function renderFamous(){
+    let html = '';
+    if(has(window.country_famus)){
+      const chips = window.country_famus.map(c=>{
+        const label = 'ทัวร์'+(c.country_name_th || c.country_name_en || '');
+        const flag  = c.img_icon ? `<img class="nt-flag" src="https://nexttripholiday.b-cdn.net/${esc(c.img_icon)}" alt="">` : '';
+        return `<button type="button" class="nt-chip" data-label="${esc(label)}">${flag}<span>${esc(label)}</span></button>`;
+      }).join('');
+      html += `<div class="nt-sec"><h6>ประเทศยอดนิยม</h6><div class="nt-chipwrap">${chips}</div></div>`;
+    }
+    if(has(window.keyword_famus)){
+      const chips = window.keyword_famus.map(k=>{
+        const label = k.keyword || k.name || '';
+        return `<button type="button" class="nt-chip" data-label="${esc(label)}">${esc(label)}</button>`;
+      }).join('');
+      if(chips) html += `<div class="nt-sec"><h6>คำค้นยอดฮิต</h6><div class="nt-chipwrap">${chips}</div></div>`;
+    }
+    // fallback set
+    const quicks = ['ญี่ปุ่น','โอซาก้า','เวียดนาม','เชียงใหม่','ไต้หวัน','จางเจียเจี้ย','ฮอกไกโด'];
+    html += `<div class="nt-sec"><h6>ค้นด่วน</h6><div class="nt-chipwrap">${
+      quicks.map(x=>`<button type="button" class="nt-chip" data-label="${esc(x)}">${esc(x)}</button>`).join('')
+    }</div></div>`;
+    $famus.innerHTML = html;
+  }
+
+  // ----- live search จากตัวแปรเดิม (country, city, province, amupur) -----
+  function searchPool(q){
+    q = norm(q).toLowerCase();
+    if(!q) return [];
+    const out=[], seen=new Set();
+
+    (window.country||[]).forEach(c=>{
+      const name = ((c.country_name_th||'')+' '+(c.country_name_en||'')).toLowerCase();
+      if(name.includes(q)){
+        const label='ทัวร์'+(c.country_name_th||c.country_name_en||'');
+        if(!seen.has(label)){ seen.add(label); out.push({label,icon:c.img_icon?`https://nexttripholiday.b-cdn.net/${c.img_icon}`:''}); }
+      }
+    });
+
+    (window.city||[]).forEach(c=>{
+      const name=((c.city_name_th||'')+' '+(c.city_name_en||'')).toLowerCase();
+      if(name.includes(q)){
+        const label=(c.city_name_th||c.city_name_en||'');
+        if(!seen.has(label)){ seen.add(label); out.push({label,icon:''}); }
+      }
+    });
+
+    (window.province||[]).forEach(p=>{
+      const name=((p.name_th||'')+' '+(p.name_en||'')).toLowerCase();
+      if(name.includes(q)){
+        const label='ทัวร์'+(p.name_th||p.name_en||'');
+        if(!seen.has(label)){ seen.add(label); out.push({label,icon:''}); }
+      }
+    });
+
+    (window.amupur||[]).forEach(a=>{
+      const name=((a.name_th||'')+' '+(a.name_en||'')).toLowerCase();
+      if(name.includes(q)){
+        const label=(a.name_th||a.name_en||'');
+        if(!seen.has(label)){ seen.add(label); out.push({label,icon:''}); }
+      }
+    });
+
+    return out.slice(0,30);
+  }
+
+  function renderLive(list){
+    $live.innerHTML = (list.length? `
+      <div class="nt-sec">
+        ${list.map(it=>`
+          <div class="nt-row" data-label="${esc(it.label)}">
+            ${it.icon?`<img class="nt-flag" src="${esc(it.icon)}" alt="">`:''}
+            <div>${esc(it.label)}</div>
+          </div>`).join('')}
+      </div>` :
+      `<div class="nt-sec"><div class="nt-row">ไม่พบผลลัพธ์</div></div>`
+    );
+  }
+
+  // ----- events -----
+  let timer;
+  $input.addEventListener('focus', ()=>{ 
+    if(!norm($input.value)){ renderFamous(); show($famus); }
+    place();
+  });
+  $input.addEventListener('input', ()=>{
+    clearTimeout(timer);
+    const v = norm($input.value);
+    timer = setTimeout(()=>{
+      if(!v){ renderFamous(); show($famus); return; }
+      renderLive(searchPool(v)); show($live);
+    },120);
+  });
+
+  // เลือกรายการ
+  [$live,$famus].forEach(box=>{
+    box.addEventListener('click', e=>{
+      const el = e.target.closest('[data-label]'); if(!el) return;
+      pick(el.getAttribute('data-label') || el.textContent.trim());
+    });
+  });
+
+  // ปิดเมื่อคลิกนอก / กด Esc
+  document.addEventListener('click', (e)=>{
+    if(e.target===$input) return;
+    if($live.contains(e.target) || $famus.contains(e.target)) return;
+    hideAll();
+  }, true);
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') hideAll(); });
+
+  // อัปเดตตำแหน่งเมื่อเลื่อน/ย่อขยาย
+  const relayout = ()=>{ if(!$live.classList.contains('hidden')||!$famus.classList.contains('hidden')) place(); };
+  window.addEventListener('scroll', relayout, true);
+  window.addEventListener('resize', relayout);
+})();
+</script>
+
+
 @endsection
 
 <!-- Removed old delayed background script; hero now uses direct media panel for clarity & aesthetics -->

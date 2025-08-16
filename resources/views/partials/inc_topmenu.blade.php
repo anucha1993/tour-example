@@ -2,6 +2,8 @@
     $contact = \App\Models\Backend\ContactModel::find(1); 
     $footer = \App\Models\Backend\FooterModel::find(1);
 ?>
+
+
 <section id="menuontop">
     <div class="wrap_menu">
         <div class="d-none d-sm-none d-md-none d-xl-block d-lg-block">
