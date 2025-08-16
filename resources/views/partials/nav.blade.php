@@ -4,7 +4,7 @@
   $footer   = \App\Models\Backend\FooterModel::find(1);
 
   // สถานะสมาชิก
-  $check_auth = App\Models\Backend\MemberModel::find(Auth::guard('Member')->id());
+  // $check_auth = App\Models\Backend\MemberModel::find(Auth::guard('Member')->id());
 
   // เมนู "ทัวร์ในประเทศ"
   $province = \App\Models\Backend\ProvinceModel::where(['status'=>'on','deleted_at'=>null])->orderBy('id','asc')->get();
@@ -102,7 +102,6 @@
       summary { list-style: none; } summary::-webkit-details-marker { display: none; }
       details[open] > summary svg.rotate { transform: rotate(90deg); }
     </style>
-
 
     <!-- แถบค้นหา (Mobile) -->
     {{-- <div class="px-3 pt-3 pb-2 border-b">
@@ -259,7 +258,7 @@
       </a>
 
       <!-- Login/Register (Mobile) -->
-      <a
+      {{-- <a
         @if($check_auth)
           href="{{ url('/member-booking') }}"
         @else
@@ -272,7 +271,7 @@
           </svg>
           @if($check_auth) {{ $check_auth->name }} @else เข้าสู่ระบบ/สมัครสมาชิก @endif
         </span>
-      </a>
+      </a> --}}
 
       <!-- การ์ดศูนย์บริการ -->
       <div class="mt-4 rounded-2xl border border-orange-200 bg-orange-50 p-4 text-center">
@@ -471,7 +470,7 @@
 
           <!-- ขวาสุด: โปรไฟล์/ค้นหา/ถูกใจ + Login/Register -->
           <div class="flex items-center gap-4">
-            @if($check_auth)
+            {{-- @if($check_auth)
               <a href="{{ url('/member-booking') }}" class="inline-flex items-center gap-2 text-[14px] text-[#214e9a]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#f0742f]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0"/>
@@ -485,7 +484,7 @@
                 </svg>
                 เข้าสู่ระบบ/สมัครสมาชิก
               </button>
-            @endif>
+            @endif> --}}
 
             <!-- Desktop Search button + popover -->
             <div class="relative hidden md:block">
